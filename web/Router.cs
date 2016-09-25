@@ -1,6 +1,9 @@
 using System;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using av2_net.Web.Helpers;
+using av2_net.SupplierDomain;
+using av2_net.ProcessDomain;
 
 namespace av2_net.Web
 {
@@ -8,16 +11,17 @@ namespace av2_net.Web
     {
         public static void HandleRequest(HttpContext context)
         {
-            
             try{
-                if(context.Request.Path.ToString() == "/")
-                    Helper.ResponsePage(context, 200, "/web/views/index.html");
-                if(context.Request.Path.ToString().StartsWith("/supplier"))
-                    SupplierDomain.Handler.Handle(context);
+                if(context.Request.Path.ToString() == "/" || context.Request.Path.ToString() == "")
+                    Responser.ResponsePage(context, "/web/views/index.html");
+                else if(context.Request.Path.ToString().StartsWith("/supplier"))
+                    new SupplierHandler().Handle(context);
+                else if(context.Request.Path.ToString().StartsWith("/process"))
+                    new ProcessHandler().Handle(context);
                 else
-                    Helper.ResponseText(context, 404, "page not found");
+                    Responser.ResponseText(context, "page not found");
             }catch(Exception){
-                Helper.ResponseText(context, 500, "internal server error");
+                Responser.ResponseText(context, "internal server error");
             }
         }
 

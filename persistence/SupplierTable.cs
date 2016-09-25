@@ -4,8 +4,9 @@ using av2_net.SupplierDomain;
 
 namespace av2_net.Persistence
 {
-    class SupplierTable : ISupplierPersistence
+    class SupplierTable
     {
+        private uint index = 0;
         private static SupplierTable instance;
         private List<Supplier> suppliers = new List<Supplier>();
 
@@ -25,6 +26,8 @@ namespace av2_net.Persistence
 
         public bool Add(Supplier t)
         {
+            index++;
+            t.id = index;
             suppliers.Add(t);
             return true;
         }
